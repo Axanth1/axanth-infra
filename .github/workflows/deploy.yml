@@ -12,7 +12,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up kubeconfig
+    - name: Install doctl
+      run: |
+        sudo snap install doctl
+
+    - name: Authenticate doctl
+      run: echo "${{ secrets.DO_API_TOKEN }}" | doctl auth init --access-token -
+
+    - name: Setup kubeconfig
       run: |
         mkdir -p ~/.kube
         echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ~/.kube/config
