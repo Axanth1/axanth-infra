@@ -15,9 +15,9 @@ jobs:
     - name: Install doctl
       run: |
         sudo snap install doctl
-
+        
     - name: Authenticate doctl
-      run: echo "${{ secrets.DO_API_TOKEN }}" | doctl auth init --access-token -
+      run: doctl auth init --access-token "${{ secrets.DO_API_TOKEN }}"
 
     - name: Setup kubeconfig
       run: |
