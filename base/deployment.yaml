@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: index-container
-          image: YOUR_DOCKERHUB_USERNAME/cicd-test:latest
+          image: axanth/cicd-test:latest
           ports:
             - containerPort: 80
