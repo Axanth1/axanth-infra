@@ -33,4 +33,4 @@ spec:
               service:
                 name: index-service
                 port:
-                  number: 80
+                  number: 80 
