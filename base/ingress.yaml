@@ -10,7 +10,7 @@ metadata:
     acme.cert-manager.io/http01-edit-in-place: "true"
 
 spec:
-  ingressClassName: nginx   # ✅ THIS LINE FIXES IT
+  ingressClassName: nginx
   tls:
     - hosts:
         - www.axanth.gr
@@ -20,6 +20,13 @@ spec:
     - host: www.axanth.gr
       http:
         paths:
+          - path: /.well-known/acme-challenge/
+            pathType: Prefix
+            backend:
+              service:
+                name: index-service
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
@@ -30,6 +37,13 @@ spec:
     - host: axanth.gr
       http:
         paths:
+          - path: /.well-known/acme-challenge/
+            pathType: Prefix
+            backend:
+              service:
+                name: index-service
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
