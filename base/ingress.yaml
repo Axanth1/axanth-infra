@@ -4,15 +4,34 @@ metadata:
   name: index-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  tls:
+    - hosts:
+        - www.axanth.gr
+        - axanth.gr                     # ← also issue cert for root domain
+      secretName: www-axanth-tls
   rules:
-  - host: www.axanth.gr
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: index-service
-            port:
-              number: 80
+    - host: www.axanth.gr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: index-service
+                port:
+                  number: 80
+
+    - host: axanth.gr                  # ← root domain rule, redirect to www
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: index-service
+                port:
+                  number: 80
