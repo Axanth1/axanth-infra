@@ -20,7 +20,7 @@ spec:
     - host: www.axanth.gr
       http:
         paths:
-          - path: /.well-known/acme-challenge/
+          - path: /.well-known/acme-challenge   # ✅ No trailing slash
             pathType: Prefix
             backend:
               service:
@@ -34,10 +34,11 @@ spec:
                 name: index-service
                 port:
                   number: 80
+
     - host: axanth.gr
       http:
         paths:
-          - path: /.well-known/acme-challenge/
+          - path: /.well-known/acme-challenge   # ✅ No trailing slash
             pathType: Prefix
             backend:
               service:
