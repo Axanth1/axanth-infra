@@ -14,7 +14,7 @@ jobs:
 
     - name: Set up Kubeconfig
       run: |
-        echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > kubeconfig
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
         export KUBECONFIG=$PWD/kubeconfig
         kubectl get nodes
         kubectl apply -f k8s/deployment.yaml
