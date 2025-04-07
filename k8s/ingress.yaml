@@ -3,9 +3,10 @@ kind: Ingress
 metadata:
   name: index-ingress
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
   ingressClassName: nginx
   tls:

@@ -4,8 +4,9 @@ metadata:
   name: index-service
 spec:
   selector:
-    app: index-app
+    app: index
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
+  type: ClusterIP
