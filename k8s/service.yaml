@@ -3,11 +3,9 @@ kind: Service
 metadata:
   name: index-service
 spec:
-  type: LoadBalancer          
   selector:
-    app: index                
+    app: index-app
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      

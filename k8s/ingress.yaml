@@ -1,14 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
-
 metadata:
   name: index-ingress
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    acme.cert-manager.io/http01-edit-in-place: "true"
-
 spec:
   ingressClassName: nginx
   tls:
@@ -20,13 +17,6 @@ spec:
     - host: www.axanth.gr
       http:
         paths:
-          - path: /.well-known/acme-challenge   # ✅ No trailing slash
-            pathType: Prefix
-            backend:
-              service:
-                name: index-service
-                port:
-                  number: 80
           - path: /
             pathType: Prefix
             backend:
@@ -34,17 +24,9 @@ spec:
                 name: index-service
                 port:
                   number: 80
-
     - host: axanth.gr
       http:
         paths:
-          - path: /.well-known/acme-challenge   # ✅ No trailing slash
-            pathType: Prefix
-            backend:
-              service:
-                name: index-service
-                port:
-                  number: 80
           - path: /
             pathType: Prefix
             backend:
