@@ -1,6 +1,6 @@
 # Axanth Infra
 
-Kubernetes manifests and CI/CD to deploy our web infrastructure.
+Kubernetes manifests and CI/CD to deploy our web infrastructure..
 
 ## Structure
 
