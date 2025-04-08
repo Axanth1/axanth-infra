@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
+  ingressClassName: nginx
   rules:
     - host: www.axanth.gr
       http:
@@ -31,6 +32,6 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - axanth.gr
         - www.axanth.gr
+        - axanth.gr
       secretName: cicd-test-tls
