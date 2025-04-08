@@ -6,21 +6,14 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      if ($host = "axanth.gr") {
+        return 301 https://www.axanth.gr$request_uri;
+      }
 spec:
   ingressClassName: nginx
   rules:
     - host: www.axanth.gr
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: cicd-test-service
-                port:
-                  number: 80
-    - host: axanth.gr
       http:
         paths:
           - path: /
