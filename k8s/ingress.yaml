@@ -1,3 +1,63 @@
+# ✅ ConfigMap for redirect logic (naked → www)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redirect-config
+data:
+  default.conf: |
+    server {
+      listen 80;
+      server_name axanth.gr;
+      return 301 https://www.axanth.gr$request_uri;
+    }
+
+---
+
+# ✅ Deployment: NGINX pod to serve the redirect
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redirect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redirect
+  template:
+    metadata:
+      labels:
+        app: redirect
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: config
+          configMap:
+            name: redirect-config
+
+---
+
+# ✅ Service for the redirect pod
+apiVersion: v1
+kind: Service
+metadata:
+  name: redirect-service
+spec:
+  selector:
+    app: redirect
+  ports:
+    - port: 80
+      targetPort: 80
+
+---
+
+# ✅ Main Ingress: serves your app and redirects axanth.gr → www.axanth.gr
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,13 +66,21 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/server-snippet: |
-      if ($host = "axanth.gr") {
-        return 301 https://www.axanth.gr$request_uri;
-      }
 spec:
   ingressClassName: nginx
   rules:
+    # 🔁 Naked domain: redirect rule
+    - host: axanth.gr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: redirect-service
+                port:
+                  number: 80
+    # ✅ Actual app served on www
     - host: www.axanth.gr
       http:
         paths:
