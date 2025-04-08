@@ -4,20 +4,33 @@ metadata:
   name: cicd-test-ingress
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
   rules:
-  - host: axanth.gr
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: cicd-test-service
-            port:
-              number: 80
+    - host: www.axanth.gr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cicd-test-service
+                port:
+                  number: 80
+    - host: axanth.gr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cicd-test-service
+                port:
+                  number: 80
   tls:
-  - hosts:
-    - axanth.gr
-    secretName: cicd-test-tls
+    - hosts:
+        - axanth.gr
+        - www.axanth.gr
+      secretName: cicd-test-tls
