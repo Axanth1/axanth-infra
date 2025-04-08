@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: index-service
+  name: cicd-test-service
 spec:
   selector:
-    app: index
+    app: cicd-test
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 80
   type: ClusterIP

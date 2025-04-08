@@ -1,21 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: index-app
-  labels:
-    app: index
+  name: cicd-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: index
+      app: cicd-test
   template:
     metadata:
       labels:
-        app: index
+        app: cicd-test
     spec:
       containers:
-        - name: index
-          image: axanth/cicd-test:latest
-          ports:
-            - containerPort: 80
+      - name: web
+        image: axanth/cicd-test:latest
+        ports:
+        - containerPort: 80
